@@ -44,10 +44,30 @@ app.use(
 
 app.use(cookieParser());
 
-console.log(CLIENT_URL);
+// console.log(CLIENT_URL);
+// app.use(
+//   cors({
+//     origin: CLIENT_URL,
+//     credentials: true,
+//   })
+// );
+
+
+const allowedOrigins = [
+  'https://platform-frontend-i6vxzmr4b-sainiaditya1s-projects.vercel.app',
+  'https://platform-frontend-eta.vercel.app',
+  'localhost:3000'
+];
+
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
